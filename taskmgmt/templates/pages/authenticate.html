@@ -1,5 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hello World!</h1>
+
+{% if name %}
+<p class="font-mono">Hello {{ name }}</p>
+{% else %}
+<h1>Hello World</h1>
+{% endif %}
+
+<div class="container mx-auto px-4 w-1/2 bg-gray-100 rounded-md shadow-lg">
+    <form class="mt-8 space-y-4 py-6">
+        <p class="text-2xl text-center">Welcome to the Task Manager</p>
+        {% include "partials/icon_input_field.html" with label="Email" name="email" input_type="email" %}
+        {% include "partials/input_field.html" with label="Password" name="password" input_type="password" %}
+        <button
+            hx-post="validate"
+            hx-trigger="click"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent rounded-full font-medium text-white bg-indigo-600"
+        >Continue
+        </button>
+    </form>
+</div>
+
 {% endblock %}

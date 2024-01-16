@@ -1,3 +1,5 @@
+<!-- {% load static %} -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,10 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Task Manager</title>
 
+    <!-- Risks of CDN: https://blog.wesleyac.com/posts/why-not-javascript-cdn -->
+    
     <!-- CSS Styles -->
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- JS Scripts -->
+    <!-- 
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1/dist/htmx.min.js"></script>
