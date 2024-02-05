@@ -1,4 +1,4 @@
-<!-- {% load static %} -->
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,8 +25,13 @@
 </head>
 
 <body>
+    <!-- Top Navigation Bar -->
+    {% if show_navbar %}
+    {% include "partials/navbar.html" %}
+    {% endif %}
+
+    <!-- Main Page Content -->
     {% block content %}
-    <!-- Main content -->
     {% endblock content %}
 
     <script 
