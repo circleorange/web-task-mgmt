@@ -1,0 +1,68 @@
+<div
+    hx-target="this"
+    hx-swap="outerHTML" >
+
+    <div class="form-floating mb-1">
+        <input
+            type="name"
+            class="form-control"
+            id="floatingName"
+            value="{{ fullName }}"
+            disabled
+            placeholder="name@example.com" >
+        <label
+            for="floatingName" >
+            Full Name
+        </label>
+    </div>
+
+    <div class="form-floating mb-1">
+        <input
+            type="email"
+            class="form-control"
+            id="floatingEmail"
+            value="{{ email }}"
+            disabled
+            placeholder="email" >
+        <label
+            for="floatingEmail" >
+            Email Address
+        </label>
+    </div>
+
+    <div class="form-floating mb-1">
+        <input
+            type="company"
+            class="form-control"
+            id="floatingCompany"
+            value="{{ company }}"
+            disabled
+            placeholder="company" >
+        <label
+            for="floatingCompany" >
+            Company Name
+        </label>
+    </div>
+
+    <div class="form-floating mb-1">
+        <input
+            type="position"
+            class="form-control"
+            id="floatingPosition"
+            value="{{ position }}"
+            disabled
+            placeholder="position" >
+        <label
+            for="floatingPosition" >
+            Position Name
+        </label>
+    </div>
+    
+    <div class="d-grid gap-2">
+        <button
+            hx-get="/user/1/edit"
+            class="btn btn-primary" >
+            Edit
+        </button>
+    </div>
+</div>
