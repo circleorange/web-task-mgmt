@@ -2,24 +2,45 @@
 
 {% block content %}
 
-{% if name %}
-<p class="font-mono">Hello {{ name }}</p>
-{% else %}
-<h1>Hello World</h1>
-{% endif %}
+<div id="content">
+    {% if name %}
+    <p class="font-mono">Hello {{ name }}</p>
+    {% else %}
+    <h1>Hello World</h1>
+    {% endif %}
 
-<div class="container mx-auto px-4 w-1/2 bg-gray-100 rounded-md shadow-lg">
-    <form class="mt-8 space-y-4 py-6">
-        <p class="text-2xl text-center">Welcome to the Task Manager</p>
-        {% include "partials/icon_input_field.html" with label="Email" name="email" input_type="email" %}
-        {% include "partials/input_field.html" with label="Password" name="password" input_type="password" %}
-        <button
-            hx-post="validate"
-            hx-trigger="click"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent rounded-full font-medium text-white bg-indigo-600"
-        >Continue
-        </button>
-    </form>
+    <div class="card" id="card">
+        <div class="card-header text-center">
+            <h5>Welcome to the Task Manager</h5>
+        </div>
+
+        <div class="card-body">
+            <p class="card-text text-center">
+                Please provide authentication details to sign in or sign up.
+            </p>
+
+            <form>
+                {% csrf_token %}
+
+                {% include "partials/input_field.html" with label="Email" name="email" input_type="email" %}
+
+                {% if email_err_msg %}
+                <p>Invalid email address</p>
+                {% endif %}
+
+                {% include "partials/input_field.html" with label="Password" name="password" input_type="password" %}
+
+                <button
+                    hx-post="validate"
+                    hx-trigger="click"
+                    hx-swap="outerHTML"
+                    hx-target="#content"
+                    class="btn btn-primary"
+                >
+                Continue
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
-
 {% endblock %}

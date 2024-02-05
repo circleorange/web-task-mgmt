@@ -24,4 +24,5 @@ urlpatterns = [
 
     path('auth/', views.authentication_view, name='auth'),
     path('auth/validate', views.authenticate),
+    path("dashboard/", views.dashboard_view, name="dashboard")
 ]
