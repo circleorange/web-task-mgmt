@@ -32,10 +32,10 @@ def authenticate(req):
         return render(
             request = req,
             template_name = "pages/authenticate.html",
-            context = user_info,
+            context = context,
         )
 
-    # HX-Redirect header requierd to get HTMX update whole page
+    # HX-Redirect header required to get HTMX update whole page
     response = HttpResponse(status=302)
     response['HX-Redirect'] = "/dashboard"
     return response
