@@ -1,0 +1,175 @@
+<form
+    hx-post="/dashboard/templates/save"
+    hx-target="this"
+    hx-swap="outerHTML" >
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="templateName" 
+                            placeholder="templateName" >
+                        <label
+                            for="templateName" >
+                            Template Name
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <select 
+                        class="form-select form-select-lg" 
+                        aria-label="Large select example">
+                        <option selected>Select Task Visibility</option>
+                        <option value="1">Public</option>
+                        <option value="2">Private</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card-body">
+            <div class="row">
+
+                <!-- LHS Column -->
+                <div class="col">
+
+                    <!-- Task Category/ Label-->
+                    <div class="form-floating mb-1">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="taskLabel" 
+                            disabled
+                            placeholder="taskLabel" >
+                        <label
+                            for="taskLabel" >
+                            Task Label
+                        </label>
+                    </div>
+
+                    <!-- Task Title -->
+                    <div class="form-floating mb-1">
+                        <input
+                            type="title"
+                            class="form-control"
+                            id="taskTitle" 
+                            disabled
+                            placeholder="taskTitle" >
+                        <label
+                            for="taskTitle" >
+                            Task Title
+                        </label>
+                    </div>
+
+                    <!-- Task Status -->
+                    <div class="form-floating mb-1">
+                        <input
+                            type="status"
+                            class="form-control"
+                            id="taskStatus" 
+                            disabled
+                            placeholder="taskStatus" >
+                        <label
+                            for="taskStatus" >
+                            Task Status
+                        </label>
+                    </div>
+
+                <!-- Close LHS Column -->
+                </div>
+
+                <!-- RHS Column -->
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <textarea
+                            class="form-control"
+                            placeholder="desc"
+                            id="floatingDescriptionTextArea"
+                            disabled
+                            style="height: 180px" 
+                        >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </textarea>
+                        <label for="floatingDescriptionTextArea">Task Description</label>
+                    </div>
+                </div>
+
+                <!-- New Field Definition -->
+                <div class="card pt-2 pb-2">
+                    <div class="row">
+
+                        <!-- New Field Name -->
+                        <div class="col">
+                            <div class="form-floating mb-1">
+                                <input
+                                    type="status"
+                                    class="form-control"
+                                    id="taskStatus" 
+                                    placeholder="taskStatus" >
+                                <label
+                                    for="taskStatus" >
+                                    Field Name
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- New Field Data Type -->
+                        <div class="col">
+                            <select 
+                                class="form-select form-select-lg" 
+                                aria-label="Large select example">
+                                <option selected>Select Data Type</option>
+                                <option value="1">Text</option>
+                                <option value="2">Number</option>
+                                <option value="3">Date</option>
+                                <option value="4">Enum</option>
+                            </select>
+                        </div>
+
+                        <!-- New Field Required? -->
+                        <div class="col">
+                            <div class="form-check form-switch">
+                                <input 
+                                    class="form-check-input" 
+                                    type="checkbox" 
+                                    role="switch" 
+                                    id="flexSwitchCheckDefault">
+                                <label 
+                                    class="form-check-label" 
+                                    for="flexSwitchCheckDefault">
+                                    Required Field?
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Close of new field row -->
+                </div>
+                <!-- Close of New Field Card -->
+
+                <!-- Insert New Field Button -->
+                <div class="d-grid gap-2 mt-2">
+                    <button
+                        hx-get="/template/add-field"
+                        class="btn btn-primary" >
+                        Insert New Field
+                    </button>
+                </div>
+            </div>
+            <!-- Close of card body row -->
+        </div>
+        <!-- Close of card body-->
+    </div>
+    <!-- Close of card -->
+
+    <!-- Save Template Button -->
+    <div class="d-grid mt-4">
+        <button
+            class="btn btn-primary" >
+            Save Template
+        </button>
+    </div>
+</form>

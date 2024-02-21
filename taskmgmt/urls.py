@@ -23,8 +23,10 @@ urlpatterns = [
 
     path('auth/', views.authenticate_view, name='auth'),
     path('auth/validate', views.authenticate),
-    path("dashboard/", views.dashboard_view, name="dashboard"),
+    path("dashboard/", views.dashboard_view),
 
     path("user/1", views.save_user_info),
     path("user/1/edit", views.update_user_info),
+    path("dashboard/tasks", views.task_list_view),
+    path("dashboard/templates", views.task_template_view),
 ]
