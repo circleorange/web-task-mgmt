@@ -32,9 +32,8 @@
                     <a 
                         class="nav-link active" 
                         href="#"
-                        hx-get="/dashboard/tasks"
-                        hx-target="#dashboard-content"
-                        aria-current="page" >
+                        hx-get="/task/list"
+                        hx-target="#content" >
                         Dashboard
                     </a>
                 </li>
@@ -54,12 +53,18 @@
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Create Task</a></li>
+                        <li><a 
+                            class="dropdown-item" 
+                            hx-get="/task/create"
+                            hx-target="#content"
+                            href="#" >
+                            Create Task
+                        </a></li>
                         <li><a 
                             class="dropdown-item" 
                             href="#"
-                            hx-get="/dashboard/templates"
-                            hx-target="#dashboard-content" >
+                            hx-get="/task/template"
+                            hx-target="#content" >
                             Create Template
                         </a></li>
                         <li><hr class="dropdown-divider"></li>

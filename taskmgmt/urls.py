@@ -29,6 +29,7 @@ urlpatterns = [
     path("task/list", TaskViews.task_list_view),
     path("task/template", TaskViews.task_template_view),
 
+    path("dashboard/", UserViews.user_dashboard_view),
     path("users/1/read", UserViews.save_user_info),
     path("users/1/edit", UserViews.update_user_info),
 ]

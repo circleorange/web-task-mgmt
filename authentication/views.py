@@ -14,9 +14,9 @@ def authenticate(req):
 
         ctx = { "email_err_msg": "Invalid Email" }
 
-        return render(req, "templates/authenticate.html", ctx)
+        return render(req, "authenticate.html", ctx)
 
     # HX-Redirect header required to get HTMX update whole page
     response = HttpResponse(status=302)
-    response['HX-Redirect'] = "/task/list"
+    response['HX-Redirect'] = "/dashboard"
     return response

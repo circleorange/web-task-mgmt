@@ -12,7 +12,8 @@
             Please provide authentication details to sign in or sign up.
         </p>
 
-        <form>
+        <form
+            hx-post="/auth/validate" >
             {% csrf_token %}
 
             {% include "input_field.html" with label="Email" name="email" input_type="email" %}
@@ -24,10 +25,6 @@
             {% include "input_field.html" with label="Password" name="password" input_type="password" %}
 
             <button
-                hx-post="validate"
-                hx-trigger="click"
-                hx-swap="outerHTML"
-                hx-target="#content"
                 class="btn btn-primary" >
                 Continue
             </button>
