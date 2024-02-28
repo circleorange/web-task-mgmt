@@ -1,0 +1,33 @@
+<form
+    hx-post="/signup" >
+    {% csrf_token %}
+
+    <div class="card" id="card">
+        <div class="card-header text-center">
+            <h5>Welcome to the Registration Page of Task Manager</h5>
+        </div>
+
+        <div class="card-body">
+            <p class="card-text text-center">
+                Please provide credentials to create an account.
+            </p>
+
+            {% include "input_field.html" with label="Email" name="email" input_type="email" %}
+            {% include "input_field.html" with label="Password" name="password" input_type="password" %}
+
+            <button
+                class="btn btn-primary" >
+                Continue
+            </button>
+
+            <button
+                class="btn btn-secondary" 
+                href="/signin"
+                hx-get="/signin"
+                hx-target="#auth-form-container"
+                hx-swap="innerHTML" >
+                Sign In
+            </button>
+        </div>
+    </div>
+</form>

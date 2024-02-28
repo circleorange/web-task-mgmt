@@ -23,15 +23,18 @@ from users import views as UserViews
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('auth/', AuthViews.authenticate_view),
-    path('auth/validate', AuthViews.authenticate),
+    # path('auth/', AuthViews.authenticate_view),
+    path("", AuthViews.auth_view),
+    path("signin/", AuthViews.signin, name="signin"),
+    path('signup/', AuthViews.signup, name="signup"),
+    path('auth/', include("django.contrib.auth.urls"), name="auth"),
 
     path("task/list", TaskViews.task_list_view, name="task-list"),
     path("task/template", TaskViews.task_template_view),
     path("task/template/save", TaskViews.task_template_save),
     path("task/create", TaskViews.create_task_view),
 
-    path("dashboard/", UserViews.user_dashboard_view),
+    path("dashboard/", UserViews.user_dashboard_view, name="dashboard"),
     path("users/1/read", UserViews.save_user_info),
     path("users/1/edit", UserViews.update_user_info),
 ]
