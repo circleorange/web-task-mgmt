@@ -1,7 +1,8 @@
 <form
-    hx-post="/dashboard/templates/save"
+    hx-post="/task/template/save"
     hx-target="this"
     hx-swap="outerHTML" >
+    {% csrf_token %}
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -10,7 +11,7 @@
                         <input
                             type="text"
                             class="form-control"
-                            id="templateName" 
+                            name="templateName" 
                             placeholder="templateName" >
                         <label
                             for="templateName" >
@@ -22,6 +23,7 @@
                 <div class="col">
                     <select 
                         class="form-select form-select-lg" 
+                        name="taskVisibility"
                         aria-label="Large select example">
                         <option selected>Select Task Visibility</option>
                         <option value="1">Public</option>
@@ -35,68 +37,7 @@
         <div class="card-body">
             <div class="row">
 
-                <!-- LHS Column -->
-                <div class="col">
-
-                    <!-- Task Category/ Label-->
-                    <div class="form-floating mb-1">
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="taskLabel" 
-                            disabled
-                            placeholder="taskLabel" >
-                        <label
-                            for="taskLabel" >
-                            Task Label
-                        </label>
-                    </div>
-
-                    <!-- Task Title -->
-                    <div class="form-floating mb-1">
-                        <input
-                            type="title"
-                            class="form-control"
-                            id="taskTitle" 
-                            disabled
-                            placeholder="taskTitle" >
-                        <label
-                            for="taskTitle" >
-                            Task Title
-                        </label>
-                    </div>
-
-                    <!-- Task Status -->
-                    <div class="form-floating mb-1">
-                        <input
-                            type="status"
-                            class="form-control"
-                            id="taskStatus" 
-                            disabled
-                            placeholder="taskStatus" >
-                        <label
-                            for="taskStatus" >
-                            Task Status
-                        </label>
-                    </div>
-
-                <!-- Close LHS Column -->
-                </div>
-
-                <!-- RHS Column -->
-                <div class="col">
-                    <div class="form-floating mb-3">
-                        <textarea
-                            class="form-control"
-                            placeholder="desc"
-                            id="floatingDescriptionTextArea"
-                            disabled
-                            style="height: 180px" 
-                        >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </textarea>
-                        <label for="floatingDescriptionTextArea">Task Description</label>
-                    </div>
-                </div>
+                {% include "task_primary_fields.html" with disabled_state="disabled" %}
 
                 <!-- New Field Definition -->
                 <div class="card pt-2 pb-2">
@@ -153,7 +94,7 @@
                 <!-- Insert New Field Button -->
                 <div class="d-grid gap-2 mt-2">
                     <button
-                        hx-get="/template/add-field"
+                        hx-get="/task/template/add-field"
                         class="btn btn-primary" >
                         Insert New Field
                     </button>
@@ -165,11 +106,6 @@
     </div>
     <!-- Close of card -->
 
-    <!-- Save Template Button -->
-    <div class="d-grid mt-4">
-        <button
-            class="btn btn-primary" >
-            Save Template
-        </button>
-    </div>
+    {% include "submit_button.html" with button_text="Save Template" %}
+    
 </form>

@@ -35,22 +35,17 @@
 </head>
 
 <body>
-    <!-- Top Navigation Bar -->
-    {% if show_navbar %}
-    {% include "partials/navbar.html" %}
-    {% endif %}
-
-    <!-- Main Page Content -->
+    <!-- Authentication Page -->
     <div 
         class="container mt-5" 
         style="min-width: 1300px" >
         <div class="row justify-content-center">
-            <div class="col-md-9"
+            <div 
+                class="col-md-9"
                 hx-target="this"
-                hx-swap="innerHTML"
-                id="content" >
+                hx-swap="innerHTML" >
                 {% block content %}
-                {% endblock content %}
+                {% endblock %}
             </div>
         </div>
     </div>

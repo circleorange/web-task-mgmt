@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    "authentication",
+    "tasks",
+    "users"
+
 ]
 
 MIDDLEWARE = [
@@ -55,7 +60,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / "taskmgmt" / "templates"
+            BASE_DIR / "templates"
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -120,8 +125,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "taskmgmt" / "static",
     BASE_DIR / "static",
+    BASE_DIR / "users" / "static",
 ]
 
 # Default primary key field type
