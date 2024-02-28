@@ -1,0 +1,61 @@
+<!-- LHS Column -->
+<div class="col">
+
+    <!-- Task Category/ Label-->
+    <div class="form-floating mb-1">
+        <input
+            type="text"
+            class="form-control"
+            name="taskLabel" 
+            {{ disabled_state }}
+            placeholder="taskLabel" >
+        <label
+            for="taskLabel" >
+            Task Label
+        </label>
+    </div>
+
+    <!-- Task Title -->
+    <div class="form-floating mb-1">
+        <input
+            type="title"
+            class="form-control"
+            name="taskTitle" 
+            {{ disabled_state }}
+            placeholder="taskTitle" >
+        <label
+            for="taskTitle" >
+            Task Title
+        </label>
+    </div>
+
+    <!-- Task Status -->
+    <div class="form-floating mb-1">
+        <input
+            type="status"
+            class="form-control"
+            name="taskStatus" 
+            {{ disabled_state }}
+            placeholder="taskStatus" >
+        <label
+            for="taskStatus" >
+            Task Status
+        </label>
+    </div>
+
+<!-- Close LHS Column -->
+</div>
+
+<!-- RHS Column -->
+<div class="col">
+    <div class="form-floating mb-3">
+        <textarea
+            class="form-control"
+            placeholder="desc"
+            name="taskDescription"
+            {{ disabled_state }}
+            style="height: 180px" 
+        ></textarea>
+        <label for="taskDescription">Task Description</label>
+    </div>
+</div>

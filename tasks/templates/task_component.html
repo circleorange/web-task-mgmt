@@ -1,17 +1,17 @@
-<div class="card">
+<div class="card mb-2">
 	<div class="card-header mb-2">
         <div class="row">
             <div class="col-10">
-                Task Title: Lorem ipsum dolor sit amet
+                {{ taskTitle|default:"Task Title" }}
             </div>
             <div class="col-2 text-end">
-                Task Label (14 c)
+                {{ taskLabel|default:"Task Label" }}
             </div>
         </div>
     </div>
 	<div class="row">
 		<div class="col ms-2">
-            <label>Status</label>: In Progress<br>
+            <label>Status</label>: {{ taskStatus|default:"Task Status" }}<br>
             Due Date: 11/FEB/24<br>
             Priority: Medium
         </div>
@@ -20,11 +20,11 @@
 				<textarea
 					class="form-control"
 					placeholder="desc"
-					id="floatingDescriptionTextArea"
+					id="taskDescription"
 					style="height: 100px"
-					disabled >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </textarea>
-				<label for="floatingDescriptionTextArea">Task Description</label>
+					disabled 
+                >{{ taskDescription|default:"Task Description" }}</textarea>
+				<label for="taskDescription">Task Description</label>
 			</div>
 		</div>
 	</div>

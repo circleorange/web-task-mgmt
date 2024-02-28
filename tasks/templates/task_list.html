@@ -4,7 +4,11 @@
         <div class="card">
             <div class="card-header">Tasks</div>
             <div class="card-body">
-                {% include "task_component.html" %}
+                {% for task in tasks %}
+                    {% include "task_component.html" with taskTitle=task.taskTitle taskLabel=task.taskLabel taskStatus=task.taskStatus taskDescription=task.taskDescription %}
+                {% empty %}
+                    <p>No tasks have yet been created</p>
+                {% endfor %}
             </div>
         </div>
     </div>
