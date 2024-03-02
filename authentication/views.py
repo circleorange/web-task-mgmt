@@ -7,6 +7,7 @@ from .forms import CustomAuthenticationForm, CustomUserCreationForm
 def auth_view(request):
     return render(request, "auth_view.html")
 
+
 def signin(request):
     if request.method == "GET":
         form = CustomAuthenticationForm()
@@ -15,16 +16,17 @@ def signin(request):
     if request.method == "POST":
         form = CustomAuthenticationForm(request.POST)
 
-        print(f"signin.POST: {request.POST}")
+        print(f"siginin.POST.form: {form}")
 
         if form.is_valid():
-            print("signin.POST.success")
+            print("signin.POST.form.is_valid: true")
 
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
             
             user = authenticate(username = email, password = password)
 
+            # If user is valid, accept authentication and redirect user to dashboard
             if user is not None:
                 login(request, user)
 
@@ -32,12 +34,14 @@ def signin(request):
                 response["HX-Redirect"] = "/dashboard"
                 return response
         else:
-            print(f"signin.POST.fail: {form.errors}")
-            form.add_error(None, "Email or Password are incorrect")
+            pass
+            print("signin.POST.form.is_valid: false")
+            # form.add_error(None, "Email or Password are incorrect")
     else:
         form = CustomUserCreationForm()
 
     return render(request, "registration/login.html", {"form": form})
+
 
 def signup(request):
     if request.method == "GET":
@@ -45,15 +49,13 @@ def signup(request):
         return render(request, "registration/signup.html", {"form": form})
 
     if request.method == "POST":
-        print(f"signup.POST.raw: {request.POST}")
-
         form = CustomUserCreationForm(request.POST)
 
-        print(f"signup.POST: {form}")
+        print(f"signup.POST.form: {form}")
 
         # Successful user registration process
         if form.is_valid():
-            print("signup.POST.success")
+            print("signup.POST.form.is_valid: true")
             
             login(request, form.save())
             
@@ -62,7 +64,7 @@ def signup(request):
             return response
         # Handling invalid form
         else:
-            print(f"signup.POST.fail: {form.errors}")
+            print(f"signup.POST.form.is_valid: false: {form.errors}")
     else:
         form = CustomUserCreationForm()
 
