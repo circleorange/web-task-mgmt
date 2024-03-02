@@ -25,8 +25,8 @@ urlpatterns = [
 
     # path('auth/', AuthViews.authenticate_view),
     path("", AuthViews.auth_view),
-    path("signin/", AuthViews.signin, name="signin"),
-    path('signup/', AuthViews.signup, name="signup"),
+    path("auth/signin", AuthViews.signin, name="signin"),
+    path('auth/signup', AuthViews.signup, name="signup"),
     path('auth/', include("django.contrib.auth.urls"), name="auth"),
 
     path("task/list", TaskViews.task_list_view, name="task-list"),

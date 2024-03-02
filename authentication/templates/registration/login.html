@@ -1,5 +1,5 @@
 <form
-    hx-post="/signin" >
+    hx-post="auth/signin" >
     {% csrf_token %}
 
     <div class="card" id="card">
@@ -27,8 +27,8 @@
 
             <button
                 class="btn btn-secondary" 
-                href="/signup"
-                hx-get="/signup"
+                href="auth/signup"
+                hx-get="auth/signup"
                 hx-target="#auth-form-container"
                 hx-swap="innerHTML" >
                 Sign Up
