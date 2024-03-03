@@ -1,26 +1,36 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from typing import Literal
 
-# Customer User Model Manager
 class CustomUserManager(BaseUserManager):
     """
-    Custom User Manager to replace the Django default username with email
-    as the unique identifier for authentication instead of username.
+    Custom User Manager used for handling Custom User Model which
+    has one field less than the Django default Base User, here the 
+    username is removed
     """
-    def create_user(self, email, password, **extra_fields):
+    def _create_user(self, email, password, **extra_fields):
         """
-        Create and save User with the given email and password
+        Create and save the user with the given email and password
         """
         if not email: raise ValueError("Email field must be set")
 
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        user = self.model(email = email, **extra_fields)
         user.set_password(password)
-        user.save()
+        user.save(using = self._db)
 
         return user
+
+    def create_user(self, email, password = None, **extra_fields):
+        """
+        Create and save regular user with the given email and password.
+        """
+        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_superuser", False)
+        extra_fields.setdefault("is_active", True)
+
+        return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
@@ -32,41 +42,22 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Super User is missing is_superuser permission")
 
-        return self.create_user(email, password, **extra_fields)
+        return self._create_user(email, password, **extra_fields)
 
 
-# Custom User Model
-class CustomUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractUser):
     """
     Custom User Model, similar to Django defaut User Mode, except the default "USERNAME_FIELD"
     is set to "email"
     """
-    email = models.EmailField(unique = True, null = True)
+    USERNAME_FIELD = "email"
+
+    username = None
+    email = models.EmailField(_("email address"), unique = True, null = True)
     first_name = models.CharField(max_length = 30, blank = True)
     last_name = models.CharField(max_length = 30, blank = True)
 
-    # is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(
-            _("staff status"),
-            default = False,
-            help_text = _("Permission whether user can authenticate into the app"),
-    )
-
-    is_active = models.BooleanField(
-            _("active"),
-            default = True,
-            help_text = _("Permission whether user is treated as active. Unselect this instead of deleting accounts"),
-    )
-
-    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
-    def __str__(self):
-        return self.email
-
-    def get_full_name(self):
-        return self.email
-
-    def get_short_name(self):
-        return self.email

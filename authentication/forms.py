@@ -1,48 +1,32 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model, authenticate
+from django.utils.translation import gettext_lazy as _
 
+User = get_user_model()
 
-# Custom Signup Form 
+# Custom Sign Up Form 
 class CustomUserCreationForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=True)
-    last_name = forms.CharField(max_length=30, required=True)
-    email = forms.EmailField(max_length=254)
+    first_name = forms.CharField(max_length = 30, required = True)
+    last_name = forms.CharField(max_length = 30, required = True)
+    email = forms.EmailField(max_length = 254, help_text="Enter valid email address")
 
     class Meta:
-        model = get_user_model()
+        model = User
         fields = ("first_name", "last_name", "email", "password1", "password2")
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.email = self.cleaned_data["email"]
-        user.first_name = self.cleaned_data["first_name"]
-        user.last_name = self.cleaned_data["last_name"]
 
-        if commit: user.save()
-
-        return user
-
-# Custom Signin Form
+# Custom Sign In Form
 class CustomAuthenticationForm(AuthenticationForm):
-    email = forms.EmailField(required = True)
-    password = forms.CharField(
-            label = "Password", 
-            strip = False, 
-            widget = forms.PasswordInput
+    username = forms.EmailField(
+        label = "Email",
+        widget = forms.TextInput(attrs = { "autofocus": True })
     )
 
     def clean(self):
+        print("CustomAuthenticationForm.clean.start")
         cleaned_data = super().clean()
-        email = cleaned_data.get("email")
-        password = cleaned_data.get("password")
-
-        user = authenticate(self.request, username = email, password = password)
-
-        if user is None:
-            raise forms.ValidationError("Please enter correct email and password", code="invalid_login")
-
-        # store authenticate user for future use if needed
-        self.user_cache = user
+        email = cleaned_data.get("username")
+        cleaned_data["username"] = User.objects.normalize_email(email)
 
         return cleaned_data

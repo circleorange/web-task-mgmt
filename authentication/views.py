@@ -14,17 +14,19 @@ def signin(request):
         return render(request, "registration/login.html", {"form": form})
 
     if request.method == "POST":
-        form = CustomAuthenticationForm(request.POST)
+        form = CustomAuthenticationForm(request, data = request.POST)
 
-        print(f"siginin.POST.form: {form}")
+        print(f"sigin.POST.form.raw: {request.POST}")
 
         if form.is_valid():
             print("signin.POST.form.is_valid: true")
 
-            email = form.cleaned_data.get("email")
+            email = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             
-            user = authenticate(username = email, password = password)
+            user = authenticate(request = request, email = email, password = password)
+
+            print(f"signin.authenticate.user: {user}")
 
             # If user is valid, accept authentication and redirect user to dashboard
             if user is not None:
@@ -33,13 +35,15 @@ def signin(request):
                 response = HttpResponse(status = 302)
                 response["HX-Redirect"] = "/dashboard"
                 return response
+            else:
+                print("User is None")
         else:
-            pass
-            print("signin.POST.form.is_valid: false")
+            print(f"signin.POST.form.is_valid: false: {form.errors}")
             # form.add_error(None, "Email or Password are incorrect")
     else:
-        form = CustomUserCreationForm()
+        form = CustomAuthenticationForm()
 
+    print("signin.UNKNOWN.end")
     return render(request, "registration/login.html", {"form": form})
 
 
