@@ -1,8 +1,9 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate, logout
 from .forms import CustomAuthenticationForm, CustomUserCreationForm
+
+debug = True
 
 def auth_view(request):
     return render(request, "auth_view.html")
@@ -73,4 +74,10 @@ def signup(request):
         form = CustomUserCreationForm()
 
     return render(request, "registration/signup.html", {"form": form})
+
+def signout(request):
+    if debug: print(f"signout.request: {request}")
+    logout(request)
+
+    return redirect("/")
 
