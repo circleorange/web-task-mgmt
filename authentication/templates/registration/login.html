@@ -1,0 +1,33 @@
+<form hx-post="auth/signin">
+{% csrf_token %}
+  <div class="card" id="card">
+    <div class="card-header text-center">
+      <h5>Welcome to the Task Manager</h5>
+    </div>
+
+    <div class="card-body">
+      <p class="card-text text-center">
+        Please provide authentication details to sign in or sign up.
+      </p>
+
+      {% include "input_field.html" with label="Email" name="username" type="email" id="id_username" %}
+
+      {% if email_err_msg %}
+      <p>Invalid email address</p>
+      {% endif %}
+
+      {% include "input_field.html" with label="Password" name="password" type="password" id="id_password" %}
+
+      <button class="btn btn-primary" >Continue</button>
+
+      <button
+        class="btn btn-secondary" 
+        href="auth/signup"
+        hx-get="auth/signup"
+        hx-target="#auth-form-container"
+        hx-swap="innerHTML" >
+        Sign Up
+      </button>
+    </div>
+  </div>
+</form>
