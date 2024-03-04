@@ -3,34 +3,50 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .models import Task
 from .forms import TaskForm
 
-tasks = []
-
 def task_detail(request, pk):
     """
-    Function designed for handling GET requests to retrieve details of existing task. Arguments:
-        - request
-        - pk: Primary Key, the unique identifier for the record
+    Function designed for handling requests of existing tasks:
+        - GET request: returns task detail view for task at specified Primary Key
+        - PUT request: update task details of the task at specified Primary Key
     """
-    context = { 
-        "task": get_object_or_404(Task, pk = pk),
-        "status_choices": Task.Status.choices,
-        "label_choices": Task.Label.choices,
-        "edit_mode": True,
-    }
+    if request.method == "GET":
+        try:
+            context = { 
+                "task": get_object_or_404(Task, pk = pk),
+                "status_choices": Task.Status.choices,
+                "label_choices": Task.Label.choices,
+                "edit_mode": True,
+            }
+            return render(request, "task_view.html", { "context": context })
+        except:
+            print("task_detail - Failed to retrieve task")
 
-    return render(request, "task_view.html", { "context": context })
+    if request.method == "PUT":
+        try:
+            task = get_object_or_404(Task, pk = pk)
+            form = TaskForm(request.POST, instance = task)
 
+            if form.is_valid():
+                form.save()
+                print(f"task_detail - Task has been successfully updated")
+            else:
+                print(f"task_detail - Task has failed form validation")
+        except:
+            print(f"task_detail - Failed to update task")
+
+    return redirect("task-list")
 
 def task_list(request):
     """
     Function designed to return the task list view, populated with user tasks
     """
-    tasks = Task.objects.all()
-
-    print(f"task_list.tasks: {tasks}")
+    try:
+        tasks = Task.objects.all()
+    except:
+        print("task_list - Failed to retrieve tasks")
+        tasks = []
 
     return render(request, "task_list.html", { "tasks": tasks })
-
 
 def task_create(request):
     """
@@ -53,17 +69,21 @@ def task_create(request):
         print(f"task_create.POST.data: {request.POST}")
 
         if form.is_valid():
-            print("task_create.form.is_valid: true")
-
-            task = form.save(commit = False)
-            task.creator = request.user
-            task.save()
+            try:
+                task = form.save(commit = False)
+                task.creator = request.user
+                task.save()
+                print("task_create - Task has been successfully created")
+            except:
+                print("task_create - Failed to create task")
 
             return redirect("task-list")
-    else:
-        form = TaskForm()
+        else:
+            print("task_create - Task has failed form validation")
+
+    print("task_create - Unknown HTTP operation has been received")
+    return render(request, "create_task.html", { "form": TaskForm() })
     
-    return render(request, "create_task.html", { "form": form })
 
 
 def task_update(request, pk):
