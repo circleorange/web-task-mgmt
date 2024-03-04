@@ -15,9 +15,8 @@ def task_detail(request, pk):
         "task": get_object_or_404(Task, pk = pk),
         "status_choices": Task.Status.choices,
         "label_choices": Task.Label.choices,
+        "edit_mode": True,
     }
-
-    print(f"task_detail.request: {request}, primary key: {pk}")
 
     return render(request, "task_view.html", { "context": context })
 
@@ -44,6 +43,7 @@ def task_create(request):
             "task": TaskForm(),
             "status_choices": Task.Status.choices,
             "label_choices": Task.Label.choices,
+            "edit_mode": False,
         }
         return render(request, "task_view.html", { "context": context })
          

@@ -1,7 +1,9 @@
-<form
-  hx-post="/task/create"
-  hx-target="this"
-  hx-swap="outerHTML" >
+{% if context.edit_mode %}
+<form hx-put="/task/{{ context.task.pk }}" hx-target="this" hx-swap="outerHTML" >
+{% else %}
+<form hx-post="/task/create" hx-target="this" hx-swap="outerHTML" >
+{% endif %}
+
   {% csrf_token %}
 
   <div class="card">
@@ -11,10 +13,14 @@
 
     <div class="card-body">
       <div class="row">
-        {% include "task_primary_fields.html" with title=context.task.title status=context.task.status description=context.task.description label=context.task.label %}
+        {% include "task_primary_fields.html" with edit_mode=context.edit_mode title=context.task.title status=context.task.status description=context.task.description label=context.task.label %}
       </div>
     </div>
   </div>
 
+  {% if context.edit_mode %}
+  {% include "submit_button.html" with button_text="Update Task" %}
+  {% else %}
   {% include "submit_button.html" with button_text="Create Task" %}
+  {% endif %}
 </form>
