@@ -30,10 +30,12 @@ urlpatterns = [
     path('auth/signout', AuthViews.signout, name="signup"),
     path('auth/', include("django.contrib.auth.urls"), name="auth"),
 
-    path("task/list", TaskViews.task_list_view, name="task-list"),
+    path("task/list", TaskViews.task_list, name="task-list"),
     path("task/template", TaskViews.task_template_view),
     path("task/template/save", TaskViews.task_template_save),
-    path("task/create", TaskViews.create_task_view),
+    path("task/create", TaskViews.task_create, name="task_view"),
+    path("task/update", TaskViews.task_update, name="task_update"),
+    path("task/<int:pk>", TaskViews.task_detail, name="task_detail"),
 
     path("dashboard/", UserViews.user_dashboard_view, name="dashboard"),
     path("users/1/read", UserViews.save_user_info),

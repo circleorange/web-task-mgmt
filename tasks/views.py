@@ -1,11 +1,107 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
+from .models import Task
+from .forms import TaskForm
 
 tasks = []
 
+def task_detail(request, pk):
+    """
+    Function designed for handling GET requests to retrieve details of existing task. Arguments:
+        - request
+        - pk: Primary Key, the unique identifier for the record
+    """
+    context = { 
+        "task": get_object_or_404(Task, pk = pk),
+        "status_choices": Task.Status.choices,
+        "label_choices": Task.Label.choices,
+    }
+
+    print(f"task_detail.request: {request}, primary key: {pk}")
+
+    return render(request, "task_view.html", { "context": context })
+
+
+def task_list(request):
+    """
+    Function designed to return the task list view, populated with user tasks
+    """
+    tasks = Task.objects.all()
+
+    print(f"task_list.tasks: {tasks}")
+
+    return render(request, "task_list.html", { "tasks": tasks })
+
+
+def task_create(request):
+    """
+    Function designed for handling GET and POST requests:
+        - GET request: returns the task creation view
+        - POST request: creates the task and redirects to task list view
+    """
+    if request.method == "GET":
+        context = { 
+            "task": TaskForm(),
+            "status_choices": Task.Status.choices,
+            "label_choices": Task.Label.choices,
+        }
+        return render(request, "task_view.html", { "context": context })
+         
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+
+        print(f"task_create.POST.data: {request.POST}")
+
+        if form.is_valid():
+            print("task_create.form.is_valid: true")
+
+            task = form.save(commit = False)
+            task.creator = request.user
+            task.save()
+
+            return redirect("task-list")
+    else:
+        form = TaskForm()
+    
+    return render(request, "create_task.html", { "form": form })
+
+
+def task_update(request, pk):
+    """
+    Function designed for handling GET and POST requests:
+        - GET request: returns task detail view for task at specified Primary Key
+        - POST request: update task details of the task at specified Primary Key
+    """
+    task = get_object_or_404(Task, pk = pk)
+
+    if request.method == "POST":
+        form = TaskForm(request.POST, instance = task)
+
+        if form.is_valid():
+            form.save()
+            return redirect("task-list")
+    else:
+        form = TaskForm(instance = task)
+
+    return render(request, "task_form.html", { "form": form })
+
+
+def task_delete(request, pk):
+    """
+    Function designed for handling POSTS requests:
+        - POST request: delete task of specified Primay Key
+    """
+    task = get_object_or_404(Task, pk = pk)
+
+    if request.method == "POST":
+        task.delete()
+        return redirect("task-list")
+    
+    return render(request, "task_form.html", { "object": task })
+
+
 def create_task_view(request):
     print("createTaskView")
-    # GET request handles returning new task creation view
     if request.method == "GET":
         print("createTaskView.GET")
         return render(request, "create_task.html")

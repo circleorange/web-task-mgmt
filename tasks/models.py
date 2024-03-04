@@ -14,11 +14,10 @@ class Task(models.Model):
         WORK = "Work", "Work"
         ACADEMIC = "Academic", "Academic"
 
-    STATUS = [
-        ("TODO", "To Do"),
-        ("IN_PROGRESS", "In Progress"),
-        ("COMPLETED", "Completed")
-    ]
+    class Status(models.TextChoices):
+        TODO = "TODO", "To Do"
+        IN_PROGRESS = "IN_PROGRESS", "In Progress"
+        COMPLETED = "COMPLETED", "Completed"
     
     title = models.CharField(max_length = 255)
     label = models.CharField(
@@ -29,8 +28,8 @@ class Task(models.Model):
     description = models.TextField(blank = True)
     status = models.CharField(
         max_length = 12,
-        choices = STATUS,
-        default = "TODO"
+        choices = Status.choices,
+        default = Status.TODO
     )
     creator = models.ForeignKey(
         User, 
