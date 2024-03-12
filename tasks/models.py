@@ -15,9 +15,9 @@ class Task(models.Model):
         ACADEMIC = "Academic", "Academic"
 
     class Status(models.TextChoices):
-        TODO = "TODO", "To Do"
-        IN_PROGRESS = "IN_PROGRESS", "In Progress"
-        COMPLETED = "COMPLETED", "Completed"
+        TODO = "To Do"
+        IN_PROGRESS = "In Progress"
+        COMPLETED = "Completed"
     
     title = models.CharField(max_length = 255)
     label = models.CharField(

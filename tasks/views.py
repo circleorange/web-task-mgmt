@@ -1,7 +1,10 @@
+from django.contrib.admin.options import csrf_protect
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from .models import Task
 from .forms import TaskForm
+import traceback
 
 def task_detail(request, pk):
     """
@@ -17,22 +20,11 @@ def task_detail(request, pk):
                 "label_choices": Task.Label.choices,
                 "edit_mode": True,
             }
+            print(f"task_detail - Task has been successfully retrieved: { pk }")
             return render(request, "task_view.html", { "context": context })
         except:
             print("task_detail - Failed to retrieve task")
-
-    if request.method == "PUT":
-        try:
-            task = get_object_or_404(Task, pk = pk)
-            form = TaskForm(request.POST, instance = task)
-
-            if form.is_valid():
-                form.save()
-                print(f"task_detail - Task has been successfully updated")
-            else:
-                print(f"task_detail - Task has failed form validation")
-        except:
-            print(f"task_detail - Failed to update task")
+            traceback.print_exc()
 
     return redirect("task-list")
 
@@ -42,11 +34,14 @@ def task_list(request):
     """
     try:
         tasks = Task.objects.all()
+        print("task_list - Task list has been successfully retrieved")
     except:
-        print("task_list - Failed to retrieve tasks")
+        print("task_list - Failed to retrieve task list")
+        traceback.print_exc()
         tasks = []
 
     return render(request, "task_list.html", { "tasks": tasks })
+
 
 def task_create(request):
     """
@@ -85,74 +80,45 @@ def task_create(request):
     return render(request, "create_task.html", { "form": TaskForm() })
     
 
-
 def task_update(request, pk):
     """
-    Function designed for handling GET and POST requests:
-        - GET request: returns task detail view for task at specified Primary Key
-        - POST request: update task details of the task at specified Primary Key
+    Function designed for handling updates to task details view for task at specified Primary Key
     """
-    task = get_object_or_404(Task, pk = pk)
-
-    if request.method == "POST":
+    try:
+        task = get_object_or_404(Task, pk = pk)
         form = TaskForm(request.POST, instance = task)
 
         if form.is_valid():
             form.save()
-            return redirect("task-list")
-    else:
-        form = TaskForm(instance = task)
+            print(f"task_detail - Task has been successfully updated")
+        else:
+            print(f"task_detail - Task has failed form validation")
 
-    return render(request, "task_form.html", { "form": form })
+    except:
+        print(f"task_detail - Failed to update task")
+        traceback.print_exc()
+
+    return redirect("task-list")
 
 
 def task_delete(request, pk):
     """
-    Function designed for handling POSTS requests:
-        - POST request: delete task of specified Primay Key
+    Function designed for handling delete requests for task of specified Primay Key
     """
-    task = get_object_or_404(Task, pk = pk)
-
-    if request.method == "POST":
+    try:
+        task = get_object_or_404(Task, pk = pk)
         task.delete()
-        return redirect("task-list")
-    
-    return render(request, "task_form.html", { "object": task })
+        print("task_detail - Task has been successfully deleted")
+    except:
+        print(f"task_detail - Failed to delete task")
+        traceback.print_exc()
 
-
-def create_task_view(request):
-    print("createTaskView")
-    if request.method == "GET":
-        print("createTaskView.GET")
-        return render(request, "create_task.html")
-
-    # POST request handles when new task is created
-    elif request.method == "POST":
-        print("createTaskView.POST")
-
-        # get task data and drop CSRF token
-        task_data = {key: request.POST[key] for key in request.POST.keys()}
-        task_data.pop("csrfmiddlewaretoken", None)
-
-        print(task_data)
-
-        # append task to session task list
-        tasks.append(task_data)
-        
-        return redirect("task-list")
-    else:
-        print("createTaskView: Unhandled HTTP operation")
-
-def task_list_view(request):
-    print("taskListView")
-
-    # retrieve tasks from session
-    print(f"Session tasks: {tasks}")
-    return render(request, "task_list.html", {"tasks": tasks})
+    return redirect("task-list")
 
 def task_template_view(req):
     print("templateView.request")
     return render(req, "task_template.html")
+
 
 def task_template_save(req):
     # Get template data

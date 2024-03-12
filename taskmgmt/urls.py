@@ -35,6 +35,8 @@ urlpatterns = [
     path("task/template/save", TaskViews.task_template_save),
     path("task/create", TaskViews.task_create, name="task_view"),
     path("task/<int:pk>", TaskViews.task_detail, name="task_detail"),
+    path("task/<int:pk>/update", TaskViews.task_update, name="task_update"),
+    path("task/<int:pk>/delete", TaskViews.task_delete, name="task_delete"),
 
     path("dashboard/", UserViews.user_dashboard_view, name="dashboard"),
     path("users/1/read", UserViews.save_user_info),
