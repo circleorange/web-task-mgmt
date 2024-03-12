@@ -1,17 +1,21 @@
-<div class="card mb-2">
+<div 
+  class="card mb-2"
+  hx-get="/task/{{ task.pk }}"
+  hx-trigger="click"
+  hx-target="#content" >
 	<div class="card-header mb-2">
         <div class="row">
             <div class="col-10">
-                {{ taskTitle|default:"Task Title" }}
+                {{ task.title|default:"Task Title" }}
             </div>
             <div class="col-2 text-end">
-                {{ taskLabel|default:"Task Label" }}
+                {{ task.label|default:"Task Label" }}
             </div>
         </div>
     </div>
 	<div class="row">
 		<div class="col ms-2">
-            <label>Status</label>: {{ taskStatus|default:"Task Status" }}<br>
+            <label>Status</label>: {{ task.status|default:"Task Status" }}<br>
             Due Date: 11/FEB/24<br>
             Priority: Medium
         </div>
@@ -23,7 +27,7 @@
 					id="taskDescription"
 					style="height: 100px"
 					disabled 
-                >{{ taskDescription|default:"Task Description" }}</textarea>
+        >{{ task.description|default:"Task Description" }}</textarea>
 				<label for="taskDescription">Task Description</label>
 			</div>
 		</div>

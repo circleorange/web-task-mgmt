@@ -1,0 +1,32 @@
+{% if context.edit_mode %}
+<form hx-post="/task/{{ context.task.pk }}/update" hx-target="this" hx-swap="outerHTML" >
+{% else %}
+<form hx-post="/task/create" hx-target="this" hx-swap="outerHTML" >
+{% endif %}
+
+  {% csrf_token %}
+
+  <div class="card">
+    <div class="card-header">
+      Template Selector
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        {% include "task_primary_fields.html" with edit_mode=context.edit_mode title=context.task.title status=context.task.status description=context.task.description label=context.task.label %}
+      </div>
+    </div>
+  </div>
+
+  {% if context.edit_mode %}
+  {% include "submit_button.html" with button_text="Update Task" %}
+  <div class="d-grid mt-4">
+    <button 
+      class="btn btn-primary" 
+      hx-post="/task/{{ context.task.pk }}/delete"
+    >Delete Task</button>
+  </div>
+  {% else %}
+  {% include "submit_button.html" with button_text="Create Task" %}
+  {% endif %}
+</form>
