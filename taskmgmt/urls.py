@@ -19,6 +19,7 @@ from django.urls import include, path
 from authentication import views as AuthViews
 from tasks import views as TaskViews
 from users import views as UserViews
+from groups import views as GroupViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,4 +42,9 @@ urlpatterns = [
     path("dashboard/", UserViews.user_dashboard_view, name="dashboard"),
     path("users/1/read", UserViews.save_user_info),
     path("users/1/edit", UserViews.update_user_info),
+
+    path("groups/", GroupViews.groups_view, name="groups_view"),
+    path("groups/create", GroupViews.group_create, name="group_create"),
+    path("groups/<int:pk>/delete", GroupViews.group_delete, name="group_delete"),
+    path("groups/<int:pk>", GroupViews.group_get, name="group_get"),
 ]

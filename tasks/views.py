@@ -1,7 +1,5 @@
-from django.contrib.admin.options import csrf_protect
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from .models import Task
 from .forms import TaskForm
 import traceback
@@ -10,7 +8,6 @@ def task_detail(request, pk):
     """
     Function designed for handling requests of existing tasks:
         - GET request: returns task detail view for task at specified Primary Key
-        - PUT request: update task details of the task at specified Primary Key
     """
     if request.method == "GET":
         try:

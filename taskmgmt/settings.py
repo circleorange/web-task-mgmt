@@ -40,8 +40,8 @@ INSTALLED_APPS = [
 
     "authentication",
     "tasks",
-    "users"
-
+    "users",
+    "groups",
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,31 @@
+<form hx-post="/groups/create">
+	{% csrf_token %}
+
+	<div class="d-grid col-6 mx-auto">
+		<div class="form-floating">
+			<div class="form-floating mb-3">
+				<input
+					type="text"
+					class="form-control"
+					id="name"
+					placeholder="Group Name"
+					name="name"
+				/>
+				<label for="name">Group Name</label>
+			</div>
+		</div>
+
+		<div class="form-floating mb-4">
+			<textarea
+				class="form-control"
+				placeholder="Leave a comment here"
+				id="description"
+				style="height: 100px"
+				name="description"
+			></textarea>
+			<label for="description">Group Description</label>
+		</div>
+
+		<button class="btn btn-primary">Create Group</button>
+	</div>
+</form>
