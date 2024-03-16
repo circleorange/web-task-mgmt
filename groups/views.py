@@ -1,7 +1,7 @@
 import traceback
 from django.shortcuts import get_object_or_404, redirect, render
 
-from authentication.models import CustomUser
+from users.models import CustomUser
 from groups.models import Group
 from .forms import GroupForm
 

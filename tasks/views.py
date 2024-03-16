@@ -68,6 +68,7 @@ def task_create(request):
                 print("task_create - Task has been successfully created")
             except:
                 print("task_create - Failed to create task")
+                traceback.print_exc()
 
             return redirect("task-list")
         else:
