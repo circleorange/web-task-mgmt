@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
+from groups.models import Group
+
 class CustomUserManager(BaseUserManager):
     """
     Custom User Manager used for handling Custom User Model which
@@ -55,8 +57,12 @@ class CustomUser(AbstractUser):
     is set to "email"
     """
     USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
 
     username = None
+
     email = models.EmailField(
         _("email address"), 
         unique = True, 
@@ -73,10 +79,6 @@ class CustomUser(AbstractUser):
     date_joined = models.DateTimeField(
         default = timezone.now
     )
-
-    REQUIRED_FIELDS = []
-
-    objects = CustomUserManager()
 
     def __str__(self):
         return self.email

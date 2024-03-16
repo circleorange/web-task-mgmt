@@ -1,5 +1,6 @@
 import traceback
 from django.shortcuts import get_object_or_404, redirect, render
+from core.models import Belongs
 
 from users.models import CustomUser
 from groups.models import Group
@@ -8,10 +9,19 @@ from .forms import GroupForm
 def groups_view(request):
     context = {}
     try:
-        group_list = request.user.user_groups.all()
+        # group_list = request.user.user_groups.all()
+        user_loggedIn = CustomUser.objects.get(id = request.user.id)
+
+        # query Belongs model for user groups
+        user_group_relations = Belongs.objects.filter(user = user_loggedIn)
+
+        # extract user groups
+        user_groups = [relation.group for relation in user_group_relations]
+
+        print(f"groups_view - User Groups: {user_groups}")
 
         context = {
-            "groups": group_list
+            "groups": user_groups
         }
         print("groups_view - User groups have been successfully retrieved")
 
@@ -53,8 +63,14 @@ def group_create(request):
         group_form = GroupForm(request.POST)
 
         if group_form.is_valid():
+
             group = group_form.save()
-            group.users.add(request.user)
+            # group.user.add(request.user)
+
+            Belongs.objects.create(
+                user = request.user,
+                group = group
+            )
 
             print("group_create - Group was successfully created")
 

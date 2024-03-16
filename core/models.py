@@ -6,12 +6,14 @@ class Belongs(models.Model):
     """
     user = models.ForeignKey(
         "users.CustomUser",
-        on_delete = models.CASCADE
+        on_delete = models.CASCADE,
+        null = True
     )
 
     group = models.ForeignKey(
         "groups.Group",
-        on_delete = models.CASCADE
+        on_delete = models.CASCADE,
+        null = True
     )
 
     class Meta:
