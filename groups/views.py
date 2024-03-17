@@ -19,7 +19,6 @@ def group_task_create(request, pk):
             "task": TaskForm(),
             "status_choices": Task.Status.choices,
             "label_choices": Task.Label.choices,
-            "edit_mode": False,
             'group_task': True,
             'group_pk': pk,
         }
@@ -33,19 +32,24 @@ def group_task_create(request, pk):
         if form.is_valid():
             try:
                 task = form.save(commit = False)
-                task.creator = request.user
+
+                group = get_object_or_404(Group, pk = pk)
+                task.group = group
+                task.user = request.user
+
                 task.save()
                 print("task_create - Task has been successfully created")
+
+                return redirect('group_get', pk = pk)
+
             except:
                 print("task_create - Failed to create task")
                 traceback.print_exc()
-
-            return redirect("task-list")
+            
         else:
             print("task_create - Task has failed form validation")
 
     print("task_create - Unknown HTTP operation has been received")
-    return render(request, "create_task.html", { "form": TaskForm() })
 
 
 def groups_view(request):
@@ -79,15 +83,14 @@ def group_get(request, pk):
     Function to retrieve view of specific group
     """
     # Provide Group details page
-    if request.method == "GET":
-        try:
-            context = {
-                "group": get_object_or_404(Group, pk = pk)
-            }
-            return render(request, "group.html", context)
-        except:
-            print("group_get - Failed to retrieve group")
-            traceback.print_exc()
+    try:
+        context = {
+            "group": get_object_or_404(Group, pk = pk)
+        }
+        return render(request, "group.html", context)
+    except:
+        print("group_get - Failed to retrieve group")
+        traceback.print_exc()
 
 
 def group_create(request):
