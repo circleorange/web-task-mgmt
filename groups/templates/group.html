@@ -72,12 +72,11 @@
 					</div>
 				</div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title"></div>
-                    </div>
-                </div>
-
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -102,14 +101,26 @@
 			data-bs-parent="#accordionExample"
 		>
 			<div class="accordion-body">
-				<strong>This is the third item's accordion body.</strong> It is hidden
-				by default, until the collapse plugin adds the appropriate classes that
-				we use to style each element. These classes control the overall
-				appearance, as well as the showing and hiding via CSS transitions. You
-				can modify any of this with custom CSS or overriding our default
-				variables. It's also worth noting that just about any HTML can go within
-				the <code>.accordion-body</code>, though the transition does limit
-				overflow.
+				<div class="row">
+					<div class="col">
+						There are 0 tasks in progress.
+					</div>
+					<div class="col d-grid justify-content-md-end">
+						<button
+							class="btn btn-outline-success btn-sm"
+							type="submit"
+							href="/groups/{{group.pk}}/task/create"
+							hx-get="/groups/{{group.pk}}/task/create"
+							hx-target="#content"
+						>
+							Create Group Task
+						</button>
+					</div>
+				</div>
+
+                <!-- Group Tasks -->
+                <div class="row">
+                </div>
 			</div>
 		</div>
 	</div>
