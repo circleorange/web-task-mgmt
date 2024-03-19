@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from users.models import CustomUser
-from groups.models import Group
-
 User = get_user_model()
 
 class Task(models.Model):
@@ -12,14 +9,14 @@ class Task(models.Model):
     """
 
     user = models.ForeignKey(
-        "users.CustomUser", 
+        'users.CustomUser', 
         on_delete = models.CASCADE, 
         null = True,
     )
 
     group = models.ForeignKey(
-        "groups.Group",
-        related_name = "tasks",
+        'groups.Group',
+        related_name = 'tasks',
         on_delete = models.CASCADE,
         null = True,
     )
@@ -87,3 +84,6 @@ class Task(models.Model):
         default = Effort.LOW,
         null = True
     )
+
+    def __str__(self):
+        return f"{self.pk}: {self.title}"

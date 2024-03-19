@@ -8,8 +8,9 @@ from users.models import CustomUser
 from groups.models import Group
 from .forms import GroupForm
 
-def group_task_list(request):
+def group_invite():
     pass
+
 
 def group_task_create(request, pk):
     print('group_task_create - Start')
@@ -19,8 +20,9 @@ def group_task_create(request, pk):
             "task": TaskForm(),
             "status_choices": Task.Status.choices,
             "label_choices": Task.Label.choices,
-            'group_task': True,
+            'create_group_task': True,
             'group_pk': pk,
+            'form_action': f'/groups/{pk}/task/create'
         }
         return render(request, "task_view.html", { "context": context })
          
@@ -84,9 +86,15 @@ def group_get(request, pk):
     """
     # Provide Group details page
     try:
+        group = get_object_or_404(Group, pk = pk)
+        group_tasks = group.tasks.all()
+        print(f'group_get - Group Tasks: {group_tasks}')
+
         context = {
-            "group": get_object_or_404(Group, pk = pk)
+            "group": group,
+            "tasks": group_tasks,
         }
+
         return render(request, "group.html", context)
     except:
         print("group_get - Failed to retrieve group")
@@ -141,6 +149,4 @@ def group_delete(request, pk):
 
     return redirect("groups_view")
 
-def group_invite():
-    pass
 

@@ -1,15 +1,4 @@
-{% if context.edit_mode %}
-    {% with action_url="/task/"|add:context.task.pk|add:"/update" %}
-    {% endwith %} 
-{% elif context.group_task %}
-    {% with action_url="/groups/"|add:context.group_pk|add:"/task/create" %}
-    {% endwith %} 
-{% else %}
-    {% with action_url="/task/create" %}
-    {% endwith %} 
-{% endif %}
-
-<form hx-post="{{ action_url }}" hx-target="this" hx-swap="outerHTML">
+<form hx-post="{{context.form_action}}" hx-target="this" hx-swap="outerHTML">
 	<div class="card">
 		<div class="card-header">Template Selector</div>
 
@@ -22,13 +11,17 @@
 		</div>
 	</div>
 
-	{% if context.edit_mode %} 
-        {% include "submit_button.html" with button_text="Update Task" %}
+	{% if context.update_task %} 
+        {% include "submit_button.html" with button_label="Update Task" %}
         {% include 'button_task_delete.html' %}
-    {% elif context.group_task %}
+    {% elif context.create_group_task %}
         {% include 'button_group_task_submit.html' with button_label='Create Group Task' %}
         {% include 'button_group_task_cancel.html' with button_label='Back' %}
+    {% elif context.update_group_task %}
+        {% include 'button_group_task_submit.html' with button_label='Update Group Task' %}
+        {% include 'button_task_delete.html' %}
+        {% include 'button_group_task_cancel.html' with button_label='Go to Group page' %}
 	{% else %} 
-        {% include "submit_button.html" with button_text="Create Task" %}
+        {% include "submit_button.html" with button_label="Create Task" %}
 	{% endif %}
 </form>

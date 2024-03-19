@@ -11,12 +11,19 @@ def task_detail(request, pk):
     """
     if request.method == "GET":
         try:
+            task = get_object_or_404(Task, pk = pk) 
             context = { 
-                "task": get_object_or_404(Task, pk = pk),
+                "task": task,
                 "status_choices": Task.Status.choices,
                 "label_choices": Task.Label.choices,
-                "edit_mode": True,
+                'edit_mode': True,
+                "update_task": True,
+                'form_action': f'/task/{pk}/update'
             }
+            if task.group is not None:
+                context['update_task'] = False
+                context['update_group_task'] = True
+            
             print(f"task_detail - Task has been successfully retrieved: { pk }")
             return render(request, "task_view.html", { "context": context })
         except:
@@ -51,7 +58,8 @@ def task_create(request):
             "task": TaskForm(),
             "status_choices": Task.Status.choices,
             "label_choices": Task.Label.choices,
-            "edit_mode": False,
+            "update_task": False,
+            'form_action': '/task/create'
         }
         return render(request, "task_view.html", { "context": context })
          
