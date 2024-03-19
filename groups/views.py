@@ -9,13 +9,15 @@ from users.models import CustomUser
 from groups.models import Group
 from .forms import GroupForm
 
+def get_group_members(grp_pk):
+    pass
 
-def get_group_by_id(group_pk):
+def get_group_by_id(grp_pk):
     """
     Get group by primary key
     """
     try:
-        group = get_object_or_404(Group, pk = group_pk)
+        group = get_object_or_404(Group, pk = grp_pk)
     except:
         print("get_group_by_id() - Failed to retrieve group")
         traceback.print_exc()
@@ -35,13 +37,13 @@ def is_valid_user_by_email(email):
     return False
 
 
-def get_user_by_email(usr_email):
+def get_user_by_email(usr_eml):
     """
     Return User object by email address
     """
-    if is_valid_user_by_email(usr_email):
+    if is_valid_user_by_email(usr_eml):
         try:
-            return CustomUser.objects.get(email = usr_email)
+            return CustomUser.objects.get(email = usr_eml)
         except:
             err_msg = 'Failed to retrieve user'
             print(f'get_user_by_email() - {err_msg}')
@@ -125,28 +127,37 @@ def group_task_create(request, pk):
     print("task_create - Unknown HTTP operation has been received")
 
 
-def groups_view(request):
-    context = {}
+def get_groups_by_user(usr):
     try:
-        # group_list = request.user.user_groups.all()
-        user_loggedIn = CustomUser.objects.get(id = request.user.id)
-
-        # query Belongs model for user groups
-        user_belongs = Belongs.objects.filter(user = user_loggedIn)
-
-        # extract user groups
-        user_groups = [relation.group for relation in user_belongs]
-
-        print(f"groups_view - User Groups: {user_groups}")
-
-        context = {
-            "groups": user_groups
-        }
-        print("groups_view - User groups have been successfully retrieved")
-
+        usr_grps = Belongs.objects.filter(user = usr)
+        usr_grps_lst = [relation.group for relation in usr_grps]
+        return usr_grps_lst
     except:
-        print("groups_view - Failed to retrieve user groups")
-        traceback.print_exc()
+        err_msg_usr_grp = 'Failed to retrieve user groups'
+        log_and_raise_exception(err_msg_usr_grp)
+
+
+def log_and_raise_exception(msg):
+    print(f'{msg}')
+    traceback.print_exc()
+    raise Exception(f'{msg}')
+
+
+def get_user_by_id(usr_pk):
+    try:
+        return CustomUser.objects.get(id = usr_pk)
+    except:
+        err_msg = 'Failed to retrieve user by ID'
+        log_and_raise_exception(err_msg)
+
+
+def groups_view(request):
+    usr = get_user_by_id(request.user.id)
+    usr_grps = get_groups_by_user(usr)
+
+    context = {
+        "groups": usr_grps
+    }
 
     return render(request, "groups_page.html", context)
 
