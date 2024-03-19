@@ -43,12 +43,12 @@ urlpatterns = [
     path("users/1/read", UserViews.save_user_info),
     path("users/1/edit", UserViews.update_user_info),
 
-    path("groups/", GroupViews.groups_view, name="groups_view"),
+    path("groups/", GroupViews.group_list_view, name="group_list_view"),
     path("groups/create", GroupViews.group_create, name="group_create"),
     path("groups/<int:pk>/delete", GroupViews.group_delete, name="group_delete"),
-    path("groups/<int:pk>", GroupViews.group_get, name="group_get"),
-    path("groups/<int:pk>/task/create", GroupViews.group_task_create, name="group_task_create"),
+    path("groups/<int:pk>", GroupViews.group_detail_view, name="group_detail_view"),
+    path("groups/<int:pk>/task/create", GroupViews.create_group_task, name="create_group_task"),
 
     path("groups/<int:pk>/invite/", GroupViews.group_invite),
-    path("groups/invite/check_email", GroupViews.groups_view),
+    path("groups/invite/check_email", GroupViews.group_list_view),
 ]

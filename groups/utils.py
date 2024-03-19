@@ -1,0 +1,55 @@
+import traceback
+
+from django.shortcuts import get_object_or_404
+
+from core.models import Belongs
+from core.utils import log_and_raise_exception
+from groups.models import Group
+from users.models import CustomUser
+
+
+def get_users_by_group(grp: Group):
+    try:
+        return grp.users.all()
+    except:
+        err_msg = 'Failed to retrieve group members'
+        log_and_raise_exception(err_msg)
+    
+
+def get_tasks_by_group(grp: Group):
+    try:
+        return grp.tasks.all()
+    except:
+        err_msg = 'Failed to retrieve group tasks'
+        log_and_raise_exception(err_msg)
+
+
+def get_groups_by_user(usr: CustomUser):
+    try:
+        usr_grps = Belongs.objects.filter(user = usr)
+        usr_grps_lst = [relation.group for relation in usr_grps]
+        return usr_grps_lst
+    except:
+        err_msg_usr_grp = 'Failed to retrieve user groups'
+        log_and_raise_exception(err_msg_usr_grp)
+
+
+def get_group_by_id(grp_pk):
+    """
+    Get group by primary key
+    """
+    try:
+        return get_object_or_404(Group, pk = grp_pk)
+    except:
+        err_msg = 'Failed to retrieve group by ID'
+        log_and_raise_exception(err_msg)
+
+
+def is_user_already_member(req_usr, req_grp):
+    """
+    Returns True if user is already member of the group
+    """
+    if Belongs.objects.filter(user = req_usr, group = req_grp):
+        return True
+    
+    return False
