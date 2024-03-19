@@ -10,12 +10,12 @@ from tasks.models import Task
 from .forms import GroupForm
 
 
-def group_invite(request, pk):
+def invite_to_group(request, pk):
     req_eml = request.POST.get('email')
-    print(f'group_invite() - provided email in request: {req_eml}')
+    print(f'invite_to_group() - provided email in request: {req_eml}')
 
     if not is_valid_user_by_email(req_eml):
-        print('group_invite() - User email was not found in the database')
+        print('invite_to_group() - User email was not found in the database')
         return HttpResponse('User was not found with the provided email')
     
     usr = get_user_by_email(req_eml)
@@ -62,10 +62,10 @@ def create_group_task(request, pk):
 
 def group_list_view(request):
     usr = get_user_by_id(request.user.id)
-    usr_grps = get_groups_by_user(usr)
+    usr_grp = get_groups_by_user(usr)
 
     context = {
-        "groups": usr_grps
+        "groups": usr_grp
     }
     return render(request, "groups_page.html", context)
 
@@ -76,22 +76,30 @@ def group_detail_view(request, pk):
     """
     # Provide Group details page
     grp = get_group_by_id(pk)
-    grp_tsks = get_tasks_by_group(grp)
+    grp_tsk = get_tasks_by_group(grp)
+    grp_usr = get_users_by_group(grp)
 
-    context = {
+    grp_tsk_len = len(grp_tsk)
+    grp_usr_len = len(grp_usr)
+
+    ctx = {
         "group": grp,
         'group_pk': pk,
-        "tasks": grp_tsks,
+        "tasks": grp_tsk,
+        'users': grp_usr,
+        'grp_tsk_len': grp_tsk_len,
+        'grp_usr_len': grp_usr_len,
     }
-    return render(request, "group.html", context)
+    return render(request, "group.html", context = ctx)
    
 
-def group_create(request):
+def create_group(request):
     # Provide Group creation page
     if request.method == "GET":
         context = {
             "form": GroupForm(),
         }
+        return render(request, 'group_create.html', context = context)
         
     # Handle group creation
     if request.method == "POST":
@@ -103,11 +111,10 @@ def group_create(request):
             print("group_create - Group was successfully created")
             return redirect("group_list_view")
         else:
-            print("group_create() - Failed to create group")
-            traceback.print_exc()
-             
+            err_msg = 'Failed to create group'
+            log_and_raise_exception(err_msg)
 
-def group_delete(request, pk):
+def delete_group(request, pk):
     """
     Function designed to handle delete requests for group at specified kek
     """

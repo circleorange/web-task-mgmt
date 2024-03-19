@@ -44,11 +44,11 @@ urlpatterns = [
     path("users/1/edit", UserViews.update_user_info),
 
     path("groups/", GroupViews.group_list_view, name="group_list_view"),
-    path("groups/create", GroupViews.group_create, name="group_create"),
-    path("groups/<int:pk>/delete", GroupViews.group_delete, name="group_delete"),
+    path("groups/create", GroupViews.create_group, name="group_create"),
+    path("groups/<int:pk>/delete", GroupViews.delete_group, name="group_delete"),
     path("groups/<int:pk>", GroupViews.group_detail_view, name="group_detail_view"),
     path("groups/<int:pk>/task/create", GroupViews.create_group_task, name="create_group_task"),
 
-    path("groups/<int:pk>/invite/", GroupViews.group_invite),
+    path("groups/<int:pk>/invite/", GroupViews.invite_to_group),
     path("groups/invite/check_email", GroupViews.group_list_view),
 ]

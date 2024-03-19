@@ -44,7 +44,7 @@
 				data-bs-toggle="collapse"
 				data-bs-target="#collapseTwo"
 			>
-				Members
+				{{grp_usr_len}} Members
 			</button>
 		</h2>
 		<div
@@ -73,6 +73,7 @@
 					</div>
 				    <div id="email-error"></div>
 				</form>
+                {% include 'group_user_list.html' with users=users %}
 			</div>
 		</div>
 	</div>
@@ -96,7 +97,7 @@
 		>
 			<div class="accordion-body">
 				<div class="row">
-					<div class="col">There are 0 tasks in progress.</div>
+					<div class="col">There are {{grp_tsk_len}} tasks in progress.</div>
 					<div class="col d-grid justify-content-md-end">
 						<button
 							class="btn btn-outline-success btn-sm"

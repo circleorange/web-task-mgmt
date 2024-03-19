@@ -10,7 +10,9 @@ from users.models import CustomUser
 
 def get_users_by_group(grp: Group):
     try:
-        return grp.users.all()
+        grp_usr = Belongs.objects.filter(group = grp)
+        grp_usr_lst = [relation.user for relation in grp_usr]
+        return grp_usr_lst
     except:
         err_msg = 'Failed to retrieve group members'
         log_and_raise_exception(err_msg)
