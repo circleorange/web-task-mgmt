@@ -1,11 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 
+from tasks.utils import *
 from core.utils import log_and_raise_exception
 from groups.utils import get_group_by_task, get_group_id_by_task
 from .models import Task
 from .forms import TaskForm
 import traceback
+
 
 def task_detail(request, pk):
     """
@@ -28,9 +30,6 @@ def task_detail(request, pk):
                 context['update_group_task'] = True
                 context['grp_pk'] = get_group_id_by_task(task)
             
-            print(f'task_detail.ctx.grp_pk: {context["grp_pk"]}')
-            
-            print(f"task_detail - Task has been successfully retrieved: { pk }")
             return render(request, "task_view.html", { "context": context })
         except:
             print("task_detail - Failed to retrieve task")
@@ -38,17 +37,13 @@ def task_detail(request, pk):
 
     return redirect("task-list")
 
+
 def task_list(request):
     """
     Function designed to return the task list view, populated with user tasks
     """
-    try:
-        tasks = Task.objects.all()
-    except:
-        msg_err = 'Failed to retrieve task list'
-        log_and_raise_exception(msg_err)
-
-    return render(request, "task_list.html", { "tasks": tasks })
+    usr_tsk = get_tasks_by_user_id(request.user.id)
+    return render(request, "task_list.html", { "tasks": usr_tsk })
 
 
 def task_create(request):
@@ -75,7 +70,7 @@ def task_create(request):
         if form.is_valid():
             try:
                 task = form.save(commit = False)
-                task.creator = request.user
+                task.user = request.user
                 task.save()
                 print("task_create - Task has been successfully created")
             except:
@@ -124,6 +119,7 @@ def task_delete(request, pk):
         traceback.print_exc()
 
     return redirect("task-list")
+
 
 def task_template_view(req):
     print("templateView.request")

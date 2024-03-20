@@ -1,4 +1,3 @@
-import traceback
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from core.models import Belongs
