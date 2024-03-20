@@ -1,5 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
+
+from core.utils import log_and_raise_exception
+from groups.utils import get_group_by_task, get_group_id_by_task
 from .models import Task
 from .forms import TaskForm
 import traceback
@@ -23,6 +26,9 @@ def task_detail(request, pk):
             if task.group is not None:
                 context['update_task'] = False
                 context['update_group_task'] = True
+                context['grp_pk'] = get_group_id_by_task(task)
+            
+            print(f'task_detail.ctx.grp_pk: {context["grp_pk"]}')
             
             print(f"task_detail - Task has been successfully retrieved: { pk }")
             return render(request, "task_view.html", { "context": context })
@@ -38,11 +44,9 @@ def task_list(request):
     """
     try:
         tasks = Task.objects.all()
-        print("task_list - Task list has been successfully retrieved")
     except:
-        print("task_list - Failed to retrieve task list")
-        traceback.print_exc()
-        tasks = []
+        msg_err = 'Failed to retrieve task list'
+        log_and_raise_exception(msg_err)
 
     return render(request, "task_list.html", { "tasks": tasks })
 

@@ -3,11 +3,34 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from core.models import Belongs
 from groups.utils import *
+from tasks.utils import get_task_by_id
 from users.utils import *
 from tasks.forms import TaskForm
 from tasks.models import Task
 
 from .forms import GroupForm
+
+def update_group_task(request, grp_pk, tsk_pk):
+    tsk = get_task_by_id(tsk_pk)
+    # tsk = get_object_or_404(Task, pk = tsk_pk)
+    print(f'update_group_task.tsk: {tsk}')
+    frm = TaskForm(request.POST, instance = tsk)
+    if frm.is_valid(): frm.save()
+
+    return group_detail_view(request, grp_pk)
+
+
+def remove_user_from_group(request, grp_pk, usr_pk):
+    grp = get_group_by_id(grp_pk)
+    usr = get_user_by_id(usr_pk)
+
+    try:
+        Belongs.objects.filter(user = usr, group = grp).delete()
+    except:
+        err_msg = 'Failed to remove user from group'
+        log_and_raise_exception(err_msg)
+    
+    return group_detail_view(request, grp_pk)
 
 
 def invite_to_group(request, pk):
@@ -23,7 +46,7 @@ def invite_to_group(request, pk):
 
     try:
         Belongs.objects.create(user = usr, group = grp)
-        return HttpResponse('User successfully added to the group')
+        return group_detail_view(request, pk)
     except:
         err_msg = 'Failed to add user to the group'
         log_and_raise_exception(err_msg)
@@ -74,7 +97,6 @@ def group_detail_view(request, pk):
     """
     View returning Group Details page
     """
-    # Provide Group details page
     grp = get_group_by_id(pk)
     grp_tsk = get_tasks_by_group(grp)
     grp_usr = get_users_by_group(grp)
@@ -94,14 +116,12 @@ def group_detail_view(request, pk):
    
 
 def create_group(request):
-    # Provide Group creation page
     if request.method == "GET":
         context = {
             "form": GroupForm(),
         }
         return render(request, 'group_create.html', context = context)
         
-    # Handle group creation
     if request.method == "POST":
         grp_frm = GroupForm(request.POST)
 

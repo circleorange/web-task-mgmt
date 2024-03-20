@@ -18,9 +18,9 @@
         {% include 'button_group_task_submit.html' with button_label='Create Group Task' %}
         {% include 'button_group_task_cancel.html' with button_label='Back' %}
     {% elif context.update_group_task %}
-        {% include 'button_group_task_submit.html' with button_label='Update Group Task' %}
+        {% include 'btn_grp_tsk_upd.html' with grp_pk=context.grp_pk tsk_pk=context.task.pk %}
         {% include 'button_task_delete.html' %}
-        {% include 'button_group_task_cancel.html' with button_label='Go to Group page' %}
+        {% include 'button_group_task_cancel.html' with button_label='Go back to Group page' grp_pk=context.grp_pk %}
 	{% else %} 
         {% include "submit_button.html" with button_label="Create Task" %}
 	{% endif %}

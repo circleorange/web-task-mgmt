@@ -48,6 +48,8 @@ urlpatterns = [
     path("groups/<int:pk>/delete", GroupViews.delete_group, name="group_delete"),
     path("groups/<int:pk>", GroupViews.group_detail_view, name="group_detail_view"),
     path("groups/<int:pk>/task/create", GroupViews.create_group_task, name="create_group_task"),
+    path("groups/<int:grp_pk>/task/<int:tsk_pk>", GroupViews.update_group_task),
+    path("groups/<int:grp_pk>/users/<int:usr_pk>/delete", GroupViews.remove_user_from_group),
 
     path("groups/<int:pk>/invite/", GroupViews.invite_to_group),
     path("groups/invite/check_email", GroupViews.group_list_view),

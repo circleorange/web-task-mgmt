@@ -20,6 +20,15 @@
 				<div class="row">
 					<div class="col">{{group.description}}</div>
 					<div class="col d-grid justify-content-md-end">
+          <button
+							class="btn btn-outline-success btn-sm"
+							type="submit"
+							href="/groups/{{group.pk}}/delete"
+							hx-post="/groups/{{group.pk}}/delete"
+							hx-target="#content"
+						>
+						Update Group Details	
+						</button>
 						<button
 							class="btn btn-outline-success btn-sm"
 							type="submit"
@@ -66,7 +75,6 @@
 							type="button"
 							id="button-addon2"
 							hx-post="/groups/{{group.pk}}/invite/"
-							hx-target="#email-error"
 						>
 							Invite Users
 						</button>

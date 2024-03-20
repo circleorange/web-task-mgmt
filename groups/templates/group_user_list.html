@@ -8,10 +8,10 @@
                 <button
                     href="/groups/{{group.pk}}"
                     class="btn btn-primary justify-content-md-end"
-                    hx-get="/groups/{{group.pk}}"
+          hx-get="/groups/{{group.pk}}/users/{{user.pk}}/delete"
                     hx-target="#content"
                 >
-                    Go to User Profile
+                   Remove from group 
                 </button>
             </div>
         </div>

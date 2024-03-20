@@ -5,7 +5,20 @@ from django.shortcuts import get_object_or_404
 from core.models import Belongs
 from core.utils import log_and_raise_exception
 from groups.models import Group
+from tasks.models import Task
 from users.models import CustomUser
+
+
+def get_group_id_by_task(tsk: Task):
+    grp: Group = get_group_by_task(tsk)
+    return grp.pk
+
+
+def get_group_by_task(tsk: Task):
+    try:
+        return get_group_by_id(tsk.group.pk)
+    except:
+        err_msg = 'Failed to retrieve group by task'
 
 
 def get_users_by_group(grp: Group):
