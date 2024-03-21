@@ -1,0 +1,48 @@
+<div class="row pt-2">
+	<div class="col">
+		<div class="card">
+			<!-- Card Header -->
+			<div class="card-header">
+				<div class="row">
+					<div class="col-8">Groups</div>
+					<div class="col-4 text-end">
+						<button
+							class="btn btn-outline-success btn-sm"
+							type="submit"
+							href="/groups/create"
+							hx-get="/groups/create"
+							hx-target="#content"
+						>
+							Create New Group
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Card Body -->
+			<div class="card-body">
+				<div class="row">
+					{% for group in groups %}
+					<div class="col-sm-6 mb-3 mb-sm-0">
+						<div class="card">
+							<div class="card-body">
+								<h5 class="card-title">{{group.name}}</h5>
+								<p class="card-text">{{ group.description }}</p>
+								<button
+									href="/groups/{{group.pk}}"
+									class="btn btn-primary justify-content-md-end"
+									hx-get="/groups/{{group.pk}}"
+									hx-target="#content"
+								>
+									Go to Group page
+								</button>
+							</div>
+						</div>
+					</div>
+					{% if forloop.counter|divisibleby:2 and not forloop.last %}
+				</div>
+				<div class="row mt-4">{% endif %} {% endfor %}</div>
+			</div>
+		</div>
+	</div>
+</div>

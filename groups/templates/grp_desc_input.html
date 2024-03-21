@@ -1,0 +1,13 @@
+<div class="col">
+    <form hx-post="/groups/{{group.pk}}/update" hx-target="#grp-desc">
+        <textarea name="description" id="id-grp-desc" class="form-control" rows="1"
+            style="height: 100px">{{group.description}}</textarea>
+        <button class="btn btn-outline-success btn-sm" type="submit">
+            Save
+        </button>
+        <button class="btn btn-outline-success btn-sm" type="submit" hx-get="/groups/{{group.pk}}/update/cancel"
+            hx-target="#grp-desc">
+            Cancel
+        </button>
+    </form>
+</div>

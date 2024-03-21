@@ -1,0 +1,87 @@
+<div class="accordion" id="accordionExample">
+    <!-- First Accordion -->
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseOne">
+                {{group.name}}
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    {% include 'grp_desc_field.html' %}
+                    {% if grp_admin_perm %}
+                    <div class="col d-grid justify-content-md-end">
+                        <button class="btn btn-outline-success btn-sm" 
+                            hx-get="/groups/{{group.pk}}/update" hx-target="#grp-desc">
+                            Update Group Details
+                        </button>
+                        <button class="btn btn-outline-success btn-sm" type="submit" href="/groups/{{group.pk}}/delete"
+                            hx-post="/groups/{{group.pk}}/delete" hx-target="#content">
+                            Delete Group
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Second Accordion -->
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo">
+                {{grp_usr_len}} Members
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                {% if grp_admin_perm %}
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="User Email Address" name="email" />
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                            hx-post="/groups/{{group.pk}}/invite/">
+                            Invite Users
+                        </button>
+                    </div>
+                    <div id="email-error"></div>
+                </form>
+                {% endif %}
+                {% include 'group_user_list.html' with users=users grp_admin_perm=grp_admin_perm %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Third Accordion -->
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                Tasks
+            </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col">There are {{grp_tsk_len}} tasks in progress.</div>
+                    {% if grp_admin_perm %}
+                    <div class="col d-grid justify-content-md-end">
+                        <button class="btn btn-outline-success btn-sm" type="submit"
+                            href="/groups/{{group.pk}}/task/create" hx-get="/groups/{{group.pk}}/task/create"
+                            hx-target="#content">
+                            Create Group Task
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Group Tasks -->
+                <div class="row mt-2">
+                    {% include "task_list_component.html" with tasks=tasks %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

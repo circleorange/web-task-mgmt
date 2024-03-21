@@ -1,32 +1,27 @@
-{% if context.edit_mode %}
-<form hx-post="/task/{{ context.task.pk }}/update" hx-target="this" hx-swap="outerHTML" >
-{% else %}
-<form hx-post="/task/create" hx-target="this" hx-swap="outerHTML" >
-{% endif %}
+<form hx-post="{{context.form_action}}" hx-target="this" hx-swap="outerHTML">
+	<div class="card">
+		<div class="card-header">Template Selector</div>
 
-  {% csrf_token %}
+		<div class="card-body">
+			<div class="row">
+				{% include "task_primary_fields.html" with edit_mode=context.edit_mode
+				title=context.task.title status=context.task.status
+				description=context.task.description label=context.task.label %}
+			</div>
+		</div>
+	</div>
 
-  <div class="card">
-    <div class="card-header">
-      Template Selector
-    </div>
-
-    <div class="card-body">
-      <div class="row">
-        {% include "task_primary_fields.html" with edit_mode=context.edit_mode title=context.task.title status=context.task.status description=context.task.description label=context.task.label %}
-      </div>
-    </div>
-  </div>
-
-  {% if context.edit_mode %}
-  {% include "submit_button.html" with button_text="Update Task" %}
-  <div class="d-grid mt-4">
-    <button 
-      class="btn btn-primary" 
-      hx-post="/task/{{ context.task.pk }}/delete"
-    >Delete Task</button>
-  </div>
-  {% else %}
-  {% include "submit_button.html" with button_text="Create Task" %}
-  {% endif %}
+	{% if context.update_task %} 
+        {% include "submit_button.html" with button_label="Update Task" %}
+        {% include 'button_task_delete.html' %}
+    {% elif context.create_group_task %}
+        {% include 'button_group_task_submit.html' with button_label='Create Group Task' %}
+        {% include 'button_group_task_cancel.html' with button_label='Back' %}
+    {% elif context.update_group_task %}
+        {% include 'btn_grp_tsk_upd.html' with grp_pk=context.grp_pk tsk_pk=context.task.pk %}
+        {% include 'button_task_delete.html' %}
+        {% include 'button_group_task_cancel.html' with button_label='Go back to Group page' grp_pk=context.grp_pk %}
+	{% else %} 
+        {% include "submit_button.html" with button_label="Create Task" %}
+	{% endif %}
 </form>

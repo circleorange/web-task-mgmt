@@ -1,0 +1,4 @@
+{% for task in tasks %} {% include "task_component.html" with title=task.title
+label=task.label status=task.status description=task.description %} {% empty %}
+<p>No tasks have yet been created</p>
+{% endfor %}

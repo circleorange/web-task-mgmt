@@ -40,8 +40,9 @@ INSTALLED_APPS = [
 
     "authentication",
     "tasks",
-    "users"
-
+    "users",
+    "groups",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -92,7 +93,7 @@ DATABASES = {
 LOGIN_REDIRECT_URL = "dashboard/"
 LOGOUT_REDIRECT_URL = "auth/"
 
-AUTH_USER_MODEL = "authentication.CustomUser"
+AUTH_USER_MODEL = "users.CustomUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
