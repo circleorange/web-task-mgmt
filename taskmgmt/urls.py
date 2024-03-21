@@ -20,6 +20,7 @@ from authentication import views as AuthViews
 from tasks import views as TaskViews
 from users import views as UserViews
 from groups import views as GroupViews
+from task_templates import views as TemplateViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,9 +32,10 @@ urlpatterns = [
     path('auth/signout', AuthViews.signout, name="signup"),
     path('auth/', include("django.contrib.auth.urls"), name="auth"),
 
+    path("template/", TemplateViews.template_view),
+    path("template/save", TemplateViews.create_template),
+
     path("task/list", TaskViews.task_list, name="task-list"),
-    path("task/template", TaskViews.task_template_view),
-    path("task/template/save", TaskViews.task_template_save),
     path("task/create", TaskViews.task_create, name="task_view"),
     path("task/<int:pk>", TaskViews.task_detail, name="task_detail"),
     path("task/<int:pk>/update", TaskViews.task_update, name="task_update"),

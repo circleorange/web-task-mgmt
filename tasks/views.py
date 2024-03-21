@@ -124,15 +124,3 @@ def task_delete(request, pk):
 def task_template_view(req):
     print("templateView.request")
     return render(req, "task_template.html")
-
-
-def task_template_save(req):
-    # Get template data
-    template_data = {key: req.POST[key] for key in req.POST.keys()}
-
-    # drop CSRD token from template data
-    template_data.pop("csrfmiddlewaretoken", None)
-
-    print(f"template data: {template_data}")
-
-    return HttpResponse(status=200)

@@ -7,18 +7,20 @@ class Task(models.Model):
     """
     Task Model with fields for title, label, description, status, and creator
     """
-
     user = models.ForeignKey(
         'users.CustomUser', 
         on_delete = models.CASCADE, 
         null = True,
     )
-
     group = models.ForeignKey(
         'groups.Group',
         related_name = 'tasks',
         on_delete = models.CASCADE,
         null = True,
+    )
+    template = models.ForeignKey(
+        'task_templates.TaskTemplate',
+        on_delete = models.CASCADE,
     )
 
     class Label(models.TextChoices):

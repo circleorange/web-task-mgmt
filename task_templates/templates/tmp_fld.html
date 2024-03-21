@@ -1,0 +1,20 @@
+<div class="form-floating mb-1">
+    <div class="row">
+        <div class="col">
+            <input type="status" class="form-control" id="{{id}}" name="{{id}}" placeholder="{{label}}" disabled>
+            <label for="{{id}}"></label>
+        </div>
+        <div class="col align-items-center">
+            <div class="row">
+                <div class="col">
+                    <input class="form-check-input" type="checkbox" role="switch" id="{{id}}-include" {%if id == "tsk_title"%}disabled checked{%endif%}>
+                    <label class="form-check-label" for="{{id}}-include">Include?</label>
+                </div>
+                <div class="col">
+                    <input class="form-check-input" type="checkbox" role="switch" id="{{id}}-required" {%if id == "tsk_title"%}disabled checked{%endif%}>
+                    <label class="form-check-label" for="{{id}}-required">Required?</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

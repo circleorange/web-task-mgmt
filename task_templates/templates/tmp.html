@@ -1,0 +1,31 @@
+<form hx-post="/task/template/save" hx-target="this" hx-swap="outerHTML">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="templateName" placeholder="templateName">
+                        <label for="templateName">
+                            Template Name
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                {% include 'tmp_fld.html' with id="tsk-title" label="Title" %}
+                {% include 'tmp_fld.html' with id="tsk-label" label="Label" %}
+                {% include 'tmp_fld.html' with id="tsk-desc" label="Description" %}
+                {% include 'tmp_fld.html' with id="tsk-status" label="Status" %}
+                {% include 'tmp_fld.html' with id="tsk-prio" label="Priority" %}
+                {% include 'tmp_fld.html' with id="tsk-eff" label="Effort" %}
+                {% include 'tmp_fld.html' with id="tsk-start-dt" label="Start Date" %}
+                {% include 'tmp_fld.html' with id="tsk-end-dt" label="End Date" %}
+                <!-- Close of new field row -->
+            </div>
+        </div>
+    </div>
+    {% include "submit_button.html" with button_label="Save Template" %}
+</form>
