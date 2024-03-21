@@ -5,14 +5,16 @@
             <div class="card-body">
                 <h5 class="card-title">{{user.first_name}} {{user.last_name}}</h5>
                 <p class="card-text">{{user.email}}</p>
+                {% if grp_admin_perm %}
                 <button
                     href="/groups/{{group.pk}}"
                     class="btn btn-primary justify-content-md-end"
-          hx-get="/groups/{{group.pk}}/users/{{user.pk}}/delete"
+                    hx-get="/groups/{{group.pk}}/users/{{user.pk}}/delete"
                     hx-target="#content"
                 >
                    Remove from group 
                 </button>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -9,10 +9,37 @@ from tasks.models import Task
 
 from .forms import GroupForm
 
+
+def get_group_description(req, grp_pk):
+    grp = get_group_by_id(grp_pk)
+    ctx = {
+        'group': grp,
+    }
+    return render(req, 'grp_desc_field.html', ctx)
+
+
+def set_group_description(req, grp_pk):
+    if req.method == "GET":
+        grp = get_group_by_id(grp_pk)
+        ctx = {
+            'group': grp,
+        }
+        return render(req, 'grp_desc_input.html', ctx)
+
+    if req.method == "POST":
+        grp_desc = req.POST.get('description')
+        grp = get_group_by_id(grp_pk)
+        grp.description = grp_desc
+        grp.save()
+
+        ctx = {
+            'group': grp,
+        }
+        return render(req, 'grp_desc_field.html', ctx)
+
+
 def update_group_task(request, grp_pk, tsk_pk):
     tsk = get_task_by_id(tsk_pk)
-    # tsk = get_object_or_404(Task, pk = tsk_pk)
-    print(f'update_group_task.tsk: {tsk}')
     frm = TaskForm(request.POST, instance = tsk)
     if frm.is_valid(): frm.save()
 
@@ -100,6 +127,13 @@ def group_detail_view(request, pk):
     grp_tsk = get_tasks_by_group(grp)
     grp_usr = get_users_by_group(grp)
 
+    usr_id = request.user.id
+    usr = get_user_by_id(usr_id)
+    # user group role
+    usr_grp_role = get_user_role(grp, usr)
+    # control group permissions if user has sufficient role
+    grp_admin_perm = True if usr_grp_role == 'Leader' else False
+
     grp_tsk_len = len(grp_tsk)
     grp_usr_len = len(grp_usr)
 
@@ -110,6 +144,7 @@ def group_detail_view(request, pk):
         'users': grp_usr,
         'grp_tsk_len': grp_tsk_len,
         'grp_usr_len': grp_usr_len,
+        'grp_admin_perm': grp_admin_perm,
     }
     return render(request, "group.html", context = ctx)
    
@@ -126,7 +161,7 @@ def create_group(request):
 
         if grp_frm.is_valid():
             grp = grp_frm.save()
-            Belongs.objects.create(user = request.user, group = grp)
+            Belongs.objects.create(user = request.user, group = grp, role = Belongs.Role.LEADER)
             print("group_create - Group was successfully created")
             return redirect("group_list_view")
         else:

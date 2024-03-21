@@ -1,5 +1,3 @@
-import traceback
-
 from django.shortcuts import get_object_or_404
 
 from core.models import Belongs
@@ -7,6 +5,23 @@ from core.utils import log_and_raise_exception
 from groups.models import Group
 from tasks.models import Task
 from users.models import CustomUser
+
+def get_user_role(grp: Group, usr: CustomUser):
+    try:
+        return Belongs.objects.get(group = grp, user = usr).role
+    except:
+        err_msg = "Failed to retrieve user role"
+        log_and_raise_exception(err_msg)
+
+
+def set_user_role(grp: Group, usr: CustomUser, role):
+    try:
+        relation = Belongs.objects.get(group = grp, user = usr)
+        relation.role = role
+        relation.save()
+    except:
+        err_msg = 'Failed to set user role'
+        log_and_raise_exception(err_msg)
 
 
 def get_group_id_by_task(tsk: Task):
@@ -19,6 +34,7 @@ def get_group_by_task(tsk: Task):
         return get_group_by_id(tsk.group.pk)
     except:
         err_msg = 'Failed to retrieve group by task'
+        log_and_raise_exception(err_msg)
 
 
 def get_users_by_group(grp: Group):

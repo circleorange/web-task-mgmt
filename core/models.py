@@ -16,6 +16,16 @@ class Belongs(models.Model):
         null = True
     )
 
+    class Role(models.TextChoices):
+        LEADER = "Leader"
+        MEMBER = "Member"
+
+    role = models.CharField(
+        max_length = 10,
+        choices = Role.choices,
+        default = Role.MEMBER
+    )
+
     class Meta:
         # ensure unique membership
         unique_together = ("user", "group")
