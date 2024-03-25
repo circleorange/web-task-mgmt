@@ -119,8 +119,3 @@ def task_delete(request, pk):
         traceback.print_exc()
 
     return redirect("task-list")
-
-
-def task_template_view(req):
-    print("templateView.request")
-    return render(req, "task_template.html")
