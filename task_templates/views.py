@@ -1,16 +1,19 @@
 from django.forms import formset_factory
 from django.shortcuts import render
+from django.views.decorators.http import require_POST, require_GET
 
 from django.shortcuts import render, redirect
 from .models import TaskTemplate, TemplateField
 from .forms import TaskTemplateForm, TemplateFieldForm
 
+@require_GET
 def template_view(req):
     tmp_frm = TaskTemplateForm()
     tmp_fld_frm = TemplateFieldForm()
     return render(req, 'tmp.html', {'tmp': tmp_frm, 'tmp_fld': tmp_fld_frm})
 
 
+@require_POST
 def create_template(req):
     print('create-template - request')
     if req.method != "POST": return render(req, "tmp.html")
